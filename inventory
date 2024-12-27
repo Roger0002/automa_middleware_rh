@@ -1,0 +1,6 @@
+[middleware]
+jboss.lab2.example.com
+datagrid.lab2.example.com
+
+[infra]
+idm.lab2.example.com
