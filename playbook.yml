@@ -1,8 +1,22 @@
 ---
-- name: Teste
-  hosts: all
+- name: Play instalador de Jboss
+  hosts: "{{ servidores }}"
+  vars_files:
+    - variaveis.yml
   gather_facts: false
   tasks:
-    - name: Teste
-      ansible.builtin.debug:
-        msg: "{{ inventory_hostname }}"
+    - name: Garante que o usuário do Jboss exista
+      delegate_to: idm.lab2.example.com
+      run_once: true
+      ipauser:
+        ipaadmin_password: "{{ senha_idm }}"
+        name: jboss
+        first: Usuário
+        last: Aplicação
+        email: jboss@lab2.example.com
+        password: jboss
+        update_password: on_create
+
+    - name: Executa a role middleware_automation.wildfly.wildfly_install
+      ansible.builtin.include_role:
+        name: middleware_automation.wildfly.wildfly_install
